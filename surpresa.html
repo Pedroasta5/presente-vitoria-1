@@ -1,0 +1,241 @@
+<sparks class="mp3"></sparks>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title class="brilho">Para você, Meu amor❤️</title>
+
+<style> 
+#btnMusica{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    background: linear-gradient(135deg,#ff5fa2,#7c4dff,#00ffd5);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255,0,150,.5);
+    transition: transform .2s, box-shadow .2s;
+}
+
+#btnMusica:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255,0,200,.8);
+}
+html,body{
+    margin:0;
+    padding:0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background:black;
+    font-family:'Segoe UI',sans-serif;
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+}
+
+.carta{
+    position:absolute;
+    top:30px;
+    left:50%;
+    transform:translateX(-50%);
+    max-width:520px;
+    padding:25px 30px;
+    background:rgba(255,255,255,0.18);
+    border-radius:20px;
+    backdrop-filter: blur(10px);
+    color:white;
+    text-align:center;
+    box-shadow:0 0 25px rgba(255,0,150,.4);
+}
+
+.carta h1{
+    margin-top:0;
+    color:#ff4d9d;
+}
+.brilho{
+    animation: brilho 2.5s ease-in-out infinite;
+}
+
+@keyframes brilho{
+    0%{
+        text-shadow:
+            0 0 5px #ff5fa2,
+            0 0 10px #ff5fa2,
+            0 0 20px #7c4dff;
+        transform: scale(1);
+    }
+
+    50%{
+        text-shadow:
+            0 0 10px #ff5fa2,
+            0 0 20px #ff5fa2,
+            0 0 35px #00ffd5;
+        transform: scale(1.04);
+    }
+
+    100%{
+        text-shadow:
+            0 0 5px #ff5fa2,
+            0 0 10px #ff5fa2,
+            0 0 20px #7c4dff;
+        transform: scale(1);
+    }
+}
+
+.carta p{
+    font-size:18px;
+    line-height:1.6;
+}
+.entrar{
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px) scale(0.9);
+    animation: aparecer 3.6s ease forwards;
+    animation-delay: 1.3s;
+}
+
+@keyframes aparecer{
+    to{
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="carta entrar">
+    <h1>Para você, Meu amor ❤️</h1>
+
+    <p>
+        A vida realmente nos reserva surpresas maravilhosas. E você foi a melhor surpresa que aconteceu em minha vida nos últimos tempos. Dizem que as melhores coisas da vida chegam sem avisar, e assim foi com você. Tudo aconteceu de modo tão suave, tão simples, tão natural, como se o nosso encontro já tivesse sido planejado pelo destino, com dia e hora marcada para acontecer. E desde de que nos conhecemos, tudo tem sido assim entre nós dois, calmo, fluido, sereno.
+
+Esse é o amor com sabor de fruta mordida, que traz paz, que faz bem, que traz entusiasmo e alegria, sem medo, sem ansiedade, sem insegurança. É assim que eu me sinto com você, meu amor, sinto-me sempre bem. Você me faz bem, você é tudo de bom para mim. O nosso namoro ainda é recente, mas tenho certeza que só vai melhorar.
+
+Eu estou e sou muito feliz com você, e assim quero ficar.
+    </p>
+
+    <p>
+        Cada dia ao seu lado é como uma nova página de um livro mágico e apaixonante! Seu sorriso ilumina meu mundo e seu abraço é meu refúgio. Quando estamos lado a lado, sinto que posso conquistar qualquer coisa, seja ela qual for!
+
+É que você não é só meu amor, mas minha inspiração e meu melhor amigo. Quero construir todos os meus sonhos com você, meu bem! Te amo… 
+        Eu prometo que vou irritar você pro resto da vida!  
+    </p>
+    <p>
+         <strong>EU TE AMOOOOOO MUUUUUUUITOOOOO!!!</strong>
+     </p>
+</div>
+
+<button id="btnMusica">▶ Tocar música</button>
+
+<audio id="musica" src="sparks.mp3" loop></audio>
+
+<script>
+    
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.onresize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+};
+
+const cores = [
+    "#ff1744", // vermelho
+    "#ff5fa2", // rosa
+    "#00ffd5", // ciano
+    "#00ff66", // verde
+    "#7c4dff", // roxo
+    "#000000"
+];
+
+let particulas = [];
+
+class Particula{
+    constructor(x,y){
+        this.x = x;
+        this.y = y;
+        const ang = Math.random()*Math.PI*2;
+        const vel = Math.random()*3+2;
+        this.vx = Math.cos(ang)*vel;
+        this.vy = Math.sin(ang)*vel;
+        this.alpha = 1;
+        this.cor = cores[Math.floor(Math.random()*cores.length)];
+        this.size = Math.random()*6+4;
+    }
+
+    draw(){
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.cor;
+        desenhaCoracao(this.x,this.y,this.size);
+        ctx.restore();
+    }
+
+    update(){
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.02;
+        this.alpha -= 0.01;
+    }
+}
+
+function desenhaCoracao(x,y,t){
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x-t, y-t, x-2*t, y+t/2, x, y+2*t);
+    ctx.bezierCurveTo(x+2*t, y+t/2, x+t, y-t, x, y);
+    ctx.closePath();
+    ctx.fill();
+}
+
+function explosao(x,y){
+    for(let i=0;i<35;i++){
+        particulas.push(new Particula(x,y));
+    }
+}
+
+function loop(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    if(Math.random()<0.04){
+        explosao(
+            Math.random()*canvas.width,
+            Math.random()*canvas.height*0.7
+        );
+    }
+
+    particulas = particulas.filter(p=>p.alpha>0);
+
+    for(const p of particulas){
+        p.update();
+        p.draw();
+    }
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+const botao = document.getElementById("btnMusica");
+    const musica = document.getElementById("musica");
+    
+    botao.addEventListener("click", () => {
+        musica.play();
+        botao.style.display = "none";
+    });
+</script>
+
+</body>
+</html>
